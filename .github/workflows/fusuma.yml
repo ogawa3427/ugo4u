@@ -22,11 +22,11 @@ jobs:
       - run: cd ..
       - run: ls -la
       - run: pwd
-      - run: 
-        find ./dist -type f \( -name "*.html" -o -name "*.js" \) | while read file; do
-          sed -e 's/href="/href="\/ugo4u/g' -e 's/src="/src="\/ugo4u/g' "$file" > temp.txt
-          mv temp.txt "$file"
-        done
+      - run: |
+          find ./dist -type f \( -name "*.html" -o -name "*.js" \) | while read file; do
+            sed -e 's/href="/href="\/ugo4u/g' -e 's/src="/src="\/ugo4u/g' "$file" > temp.txt
+            mv temp.txt "$file"
+          done
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
