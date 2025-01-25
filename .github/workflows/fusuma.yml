@@ -13,10 +13,10 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 20
-      - run: npm i fusuma -D
-      - run: npm ci
-      - run: ls -la
-      - run: npx fusuma build
+      # - run: npm i fusuma -D
+      # - run: npm ci
+      # - run: ls -la
+      # - run: npx fusuma build
       - run: ls -la
       - run: pwd
       - run: cd ..
@@ -25,4 +25,4 @@ jobs:
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist
+          publish_dir: /home/runner/work/ugo4u/ugo4u/dist
