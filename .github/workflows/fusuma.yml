@@ -19,7 +19,7 @@ jobs:
 
       - name: time stamp
         run: |
-          cat ./slides/0-slide.md | sed 's/mod-date/$(date "+%F_%T")/g' > hoge.txt
+          cat ./slides/0-slide.md | sed "s/mod-date/$(date "+%F_%T")/" > hoge.txt
           cat hoge.txt > ./slides/0-slide.md
           rm hoge.txt
 

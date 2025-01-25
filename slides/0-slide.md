@@ -6,6 +6,7 @@
 
 <!-- version 0.0.0 -->
 [mod-date 現在]
+<br />
 [v. ver-num]
 
 ---
