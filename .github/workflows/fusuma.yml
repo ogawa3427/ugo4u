@@ -23,7 +23,8 @@ jobs:
       - run: ls -la
       - run: pwd
       # ./dist/index.htmlにsedを適用する
-      - run: cat ./dist/index.html | sed -e 's/href="/href="\/ugo4u/g' -e 's/src="/src="\/ugo4u/g' > ./dist/index.html
+      - run: cat ./dist/index.html | sed -e 's/href="/href="\/ugo4u/g' -e 's/src="/src="\/ugo4u/g' > hoge.txt
+      - run: cat hoge.txt > ./dist/index.html
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
