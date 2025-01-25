@@ -13,7 +13,16 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: 20
+
+      # Javaのインストール
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+
       - run: npm i fusuma -D
+      - run: npm i @fusuma/task-pdf -D
       - run: npm ci
       - run: ls -la
 
@@ -72,11 +81,11 @@ jobs:
         run: |
           mv ./version.txt ./dist/version.txt
 
-      # - run: |
-      #     find ./dist -type f \( -name "*.html" -o -name "*.js" \) | while read file; do
-      #       sed -e 's/href="\//href="\/ugo4u\//g' -e 's/src="\//src="\/ugo4u\//g' "$file" > temp.txt
-      #       mv temp.txt "$file"
-      #     done
+      - name: Export PDF
+        run: npx fusuma pdf
+
+      - run: mv slide.pdf ./dist/ogawa3427_ugo4u_$(cat version.txt).pdf
+      
       - uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
