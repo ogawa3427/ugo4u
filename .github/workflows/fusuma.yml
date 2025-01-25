@@ -16,12 +16,62 @@ jobs:
       - run: npm i fusuma -D
       - run: npm ci
       - run: ls -la
+
+      - name: time stamp
+        run: |
+          cat ./slides/0-slide.md | sed 's/mod-date/$(date "+%F_%T")/g' > hoge.txt
+          cat hoge.txt > ./slides/0-slide.md
+          rm hoge.txt
+
+      - name: FetchVersion
+        run: |
+          curl -s -f https://ogawa3427.github.io/ugo4u/version.txt --output version.txt || echo "0.0.0" > version.txt
+
+      - name: MajorVersionUpdate
+        if: "contains(github.event.head_commit.message, '[major]')"
+        run: |
+          version=$(cat version.txt)
+          major=$(echo $version | cut -d. -f1)
+          new_version="$((major + 1)).0.0"
+          echo $new_version > version.txt
+          sed "s/ver-num/$new_version/" ./slides/0-slide.md > hoge.txt
+          cat hoge.txt > ./slides/0-slide.md
+          rm hoge.txt
+
+      - name: MinorVersionUpdate
+        if: "contains(github.event.head_commit.message, '[minor]')"
+        run: |
+          version=$(cat version.txt)
+          minor=$(echo $version | cut -d. -f2)
+          new_version="$((major)).$((minor + 1)).0"
+          echo $new_version > version.txt
+          sed "s/ver-num/$new_version/" ./slides/0-slide.md > hoge.txt
+          cat hoge.txt > ./slides/0-slide.md
+          rm hoge.txt
+
+      # 上記の二つとも当てはまらなかった場合はパッチバージョンを更新する
+      - name: PatchVersionUpdate
+        if: "!contains(github.event.head_commit.message, '[major]') && !contains(github.event.head_commit.message, '[minor]')"
+        run: |
+          version=$(cat version.txt)
+          patch=$(echo $version | cut -d. -f3)
+          new_version="$((major)).$((minor)).$((patch + 1))"
+          echo $new_version > version.txt
+          sed "s/ver-num/$new_version/" ./slides/0-slide.md > hoge.txt
+          cat hoge.txt > ./slides/0-slide.md
+          rm hoge.txt
+
       - run: npx fusuma build
       - run: ls -la
       - run: pwd
       - run: cd ..
       - run: ls -la
       - run: pwd
+
+      - name: Move version.txt
+        run: |
+          mv ./version.txt ./dist/version.txt
+
       # - run: |
       #     find ./dist -type f \( -name "*.html" -o -name "*.js" \) | while read file; do
       #       sed -e 's/href="\//href="\/ugo4u\//g' -e 's/src="\//src="\/ugo4u\//g' "$file" > temp.txt

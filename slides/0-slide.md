@@ -4,6 +4,10 @@
 
 ## 小川/Ogawa3427
 
+<!-- version 0.0.0 -->
+[mod-date 現在]
+[v. ver-num]
+
 ---
 
 # 何コレ?
